@@ -11,7 +11,7 @@ const router = createRouter({
     },
     {
       path: '/explore',
-      name: 'explore',
+      name: 'ExploreView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded w../views/ExploreView.vueed.

@@ -26,7 +26,7 @@
               <RouterLink class="nav-link" to="/profile">MyProfile</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/logout">Logout</RouterLink>
+              <button class="nav-link" @click="logout">Logout</button>
             </li>
           </ul>
         </div>
@@ -37,6 +37,44 @@
 
 <script setup>
 import { RouterLink } from "vue-router";
+import { ref, onMounted } from "vue";
+
+let csrf_token = ref("");
+let error = ref("");
+
+const getCsrfToken = () => {
+  fetch('/api/v1/csrf-token')
+    .then((response) => response.json())
+    .then((data) => {
+      csrf_token.value = data.csrf_token;
+    });
+};
+
+const logout = () => {
+  fetch('/api/v1/auth/logout', {
+    method: "POST",
+    headers: {
+      'X-CSRFToken': csrf_token.value
+    }
+  })
+    .then(response => {
+      return response.json();
+    })
+    .then(data => {
+      if(data.message === "User successfully logged out.") {
+        localStorage.removeItem('token');
+        window.location.href = '/'
+      }
+      error.messages = data;
+    })
+    .catch(error => {
+      console.log(error);
+    });
+};
+
+onMounted(() => {
+  getCsrfToken();
+});
 </script>
 
 <style>

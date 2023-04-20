@@ -25,15 +25,27 @@
 </template>
 <script>
 import { ref } from "vue";
-// let csrf_token = ref("");
-// let error = ref("");
-// function getCsrfToken() {
-//     fetch('/api/v1/csrf-token')
-//         .then((response) => response.json())
-//         .then((data) => {
-//             csrf_token.value = data.csrf_token;
-//         });
-// }
+import { createRouter, createWebHistory } from 'vue-router'
+
+const router = createRouter({
+  history: createWebHistory(),
+  routes: [
+    {
+      path: '/register',
+      redirect: '/login'
+    }
+  ]
+})
+
+let csrf_token = ref("");
+let error = ref("");
+function getCsrfToken() {
+    fetch('/api/v1/csrf-token')
+        .then((response) => response.json())
+        .then((data) => {
+            csrf_token.value = data.csrf_token;
+        });
+}
 export default {
 data() {
     return {
@@ -55,10 +67,15 @@ methods: {
     saveUser() {
         let userForm = document.getElementById('registerForm');
         let form_data = new FormData(userForm);
-        form_data.append("title", this.title);
-        form_data.append("description", this.description);
-        form_data.append("poster", this.poster);
-        fetch("/api/v1/movies", {
+        form_data.append("username", this.username);
+        form_data.append("password", this.password);
+        form_data.append("firstname", this.firstName);
+        form_data.append("lastname", this.lastName);
+        form_data.append("email", this.email);
+        form_data.append("location", this.location);
+        form_data.append("biography", this.biography);
+        form_data.append("photo", this.image);
+        fetch("/api/v1/register", {
         method: "POST",
         headers: {
             'X-CSRFToken': csrf_token.value
@@ -69,16 +86,19 @@ methods: {
             return response.json();
         })
         .then(data => {
+            if(data.message === "User successfully registered."){
+                this.$router.push('/login');
+            }
             error.messages = data
         })
         .catch(error => {
             console.log(error);
         });
     }
-}
-// mounted() {
-//     getCsrfToken();
-// }
+    },
+    mounted() {
+        getCsrfToken();
+    }
 };
 </script>
 <style>

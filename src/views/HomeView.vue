@@ -1,10 +1,18 @@
+
+
 <script setup>
-import { ref } from "vue";
 import { RouterLink } from "vue-router";
+
+const token = localStorage.getItem('token')
+
+if (token) {
+  window.location.href = 'explore'
+}
 </script>
 
 <template>
-    <div class="container">
+    <div v-if="token"></div>
+    <div class="container" v-else>
       <div class="home-img">
         <img src="../assets/home.jpg" alt="">
       </div>
