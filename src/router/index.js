@@ -18,8 +18,8 @@ const router = createRouter({
       component: () => import('../views/ExploreView.vue')
     },
     {
-      path: '/profile',
-      name: 'profile',
+      path: 'profile',
+      name: 'ProfileView',
       // route level code-splitting
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded w../views/ExploreView.vueed.
@@ -40,6 +40,11 @@ const router = createRouter({
       // this generates a separate chunk (About.[hash].js) for this route
       // which is lazy-loaded w../views/ExploreView.vueed.
       component: () => import('../views/RegisterView.vue')
+    },
+    {
+      path: '/post/new',
+      name: 'NewPostView',
+      component: () => import('../views/NewPostView.vue')
     }
   ]
 })

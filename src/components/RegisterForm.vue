@@ -6,9 +6,9 @@
                 <input v-model="title" name="username" type="text" class="form-control" placeholder="Enter username">
                 <label for="password">Password</label>
                 <input v-model="title" name="password" type="password" class="form-control" placeholder="Enter password">
-                <label for="firstname">Firstname</label>
+                <label for="firstname">First Name</label>
                 <input v-model="title" name="firstname" type="text" class="form-control" placeholder="Enter first name">
-                <label for="lastname">Lastname</label>
+                <label for="lastname">Last Name</label>
                 <input v-model="title" name="lastname" type="text" class="form-control" placeholder="Enter lastname">
                 <label for="email">Email</label>
                 <input v-model="title" name="email" type="text" class="form-control" placeholder="Enter email">

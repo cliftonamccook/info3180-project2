@@ -23,7 +23,6 @@ class RegistrationForm(FlaskForm):
         ]
     )
 
-
 class NewPostForm(FlaskForm):
     caption = TextAreaField("Description", validators=[InputRequired()])
     photo = FileField('Image', validators=[

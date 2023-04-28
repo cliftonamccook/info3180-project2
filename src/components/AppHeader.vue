@@ -23,7 +23,7 @@
               <RouterLink class="nav-link" to="/explore">Explore</RouterLink>
             </li>
             <li class="nav-item">
-              <RouterLink class="nav-link" to="/profile">MyProfile</RouterLink>
+              <RouterLink class="nav-link" to="/profile">My Profile</RouterLink>
             </li>
             <li class="nav-item">
               <button class="nav-link" @click="logout">Logout</button>
