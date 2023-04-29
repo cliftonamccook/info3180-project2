@@ -1,18 +1,11 @@
-
-
 <script setup>
+import { ref } from "vue";
 import { RouterLink } from "vue-router";
 
-const token = localStorage.getItem('token')
-
-if (token) {
-  window.location.href = 'explore'
-}
 </script>
 
 <template>
-    <div v-if="token"></div>
-    <div class="container" v-else>
+<div class="container">
       <div class="home-img">
         <img src="../assets/home.jpg" alt="">
       </div>
@@ -27,9 +20,9 @@ if (token) {
     </div>
 </template>
 
-<style>
-  body{
-    background: #e5e5e5;
+<style scoped>
+    body{
+    background: #f5efe6;
   }
 
   .container{
@@ -40,6 +33,7 @@ if (token) {
     width: 80%;
     margin: 10em auto;
     font-weight: bold;
+    justify-content: center;
   }
 
   h2{
@@ -70,8 +64,9 @@ if (token) {
     height: 100%;
     width: 40%;
     text-align: center;
-    background: #fff;
+    background-color: #ffffff;
     border-radius: 5px;
+    border: black solid 1px;
   }
 
   .reg-buttons{
@@ -97,5 +92,6 @@ if (token) {
   .login-button{
     background: #6fb4e2;
   }
+
 
 </style>

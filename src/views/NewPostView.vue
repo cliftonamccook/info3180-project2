@@ -1,8 +1,7 @@
 <script setup>
   import { ref, onMounted } from "vue";
-  import router from '../router/index.js'
-
   var success = ref("");
+  var successMessage = ref("")
   var hasErrors = ref("");
   var errors = ref([]);
 
@@ -17,14 +16,22 @@ function getCsrfToken() {
     })
 }
 
-function login(){
-    let loginForm = document.getElementById('loginForm');
-    let form_data = new FormData(loginForm);
-    fetch("/api/v1/auth/login", {
+function postNew(){
+    const token = sessionStorage.getItem('jwt')
+    if (token == null){
+        return router.push({ name: 'login'})
+    }
+    const tokenParts = token.split('.')
+    const payload = JSON.parse(atob(tokenParts[1]))
+    const userid = payload['subject']
+    let newPostForm = document.getElementById('newPostForm');
+    let form_data = new FormData(newPostForm);
+    fetch(`/api/v1/users/${userid}/posts`, {
         method: 'POST',
         body: form_data,
         headers: {
-            'X-CSRFToken': csrf_token.value
+            'X-CSRFToken': csrf_token.value,
+            'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
         }
     })
     .then(function (response) {
@@ -34,8 +41,7 @@ function login(){
         if (data.message) {
             success.value = true;
             hasErrors.value = false;
-            sessionStorage.setItem('jwt', data.token)
-            router.push({name: 'explore'})
+            successMessage = data.message
             console.log(data);
         }
         if (data.errors) {
@@ -58,37 +64,39 @@ function clearForm(){
     textArea.forEach(input =>  input.value = '');
 }
 
+
+
 onMounted(() => {
     clearForm();
     getCsrfToken();
 });
-
 </script>
 
 <template>
-  <div class="form-container">
-    <h2>Login</h2>
+    <div class="form-container">
+    <h2>Make A New Post</h2>
+    <div v-if="success" class="alert alert-success">{{ successMessage }}</div>
     <div v-if="hasErrors" class="alert alert-danger">
         <ul>
             <li v-for="err in errors">{{ err }}</li>
         </ul>    
     </div>
-    <form @submit.prevent="login" id="loginForm">
+    <form @submit.prevent="postNew" enctype="multipart/form-data" id="newPostForm">
         <div class="form-group mb-3">
-        <label for="username" class="form-label">Username</label>
-        <input type="text" name="username" class="form-control" />
+            <label for="photo" class="form-label">Photo</label>
+            <input type="file" name="photo" class="form-control" />
         </div>
         <div class="form-group mb-3">
-        <label for="password" class="form-label">Password</label>
-        <input name="password" class="form-control" type="password"/>
+            <label for="caption" class="form-label">Caption</label>
+            <textarea name="caption" class="form-control" rows="3"></textarea>
         </div>
-        <button type="submit" class="btn btn-primary">Login</button>
+        <button type="submit" class="btn btn-primary">Submit</button>
     </form>
     </div>
 </template>
 
 <style scoped>
-  div.form-container {
+div.form-container {
         width: 400px;
         margin-left: 50px;
         margin-right: 50px;
