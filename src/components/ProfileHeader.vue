@@ -1,5 +1,27 @@
 <script setup>
+import { onMounted } from 'vue';
+
     const props = defineProps(['userdata'])
+
+// function getFollowers(id){
+//     fetch(`/api/v1/users/${id}/follow`, {
+//     method: 'GET',
+//     headers: {
+//         'Authorization': `Bearer ${sessionStorage.getItem('jwt')}`
+//     }
+//     })
+//     .then(function (response) {
+//         return response.json();
+//     })
+//     .then(function (data) {
+//         document.getElementById('followers').innerText = data.followers
+//      })
+//     .catch(function (error) {
+//         console.log(error);
+//     });
+// }
+
+
 </script>
 
 <template>
@@ -17,11 +39,11 @@
             <div id="posts-followers">
                 <div id="posts">
                     <div>Posts</div>
-                    <div>#</div>
+                    <div id="post-count">#</div>
                 </div>
                 <div id="followers">
                     <div>Followers</div>
-                    <div>#</div>
+                    <div id="follower-count">#</div>
                 </div>
             </div>
             <div>
@@ -73,6 +95,7 @@
   #posts-followers {
     display: flex; 
     flex-direction: row;
+    column-gap: 20px;
   }
 
 </style>

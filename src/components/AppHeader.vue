@@ -2,7 +2,6 @@
   import { RouterLink } from "vue-router";
   import { ref, onMounted } from "vue";
   const props = defineProps(['loggedIn'])
-
 </script>
 
 <template>

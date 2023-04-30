@@ -200,7 +200,7 @@ def get_posts(user_id):
     return jsonify(posts=posts), 200
 
 
-@app.route('/api/users/<user_id>/follow', methods=['POST'])
+@app.route('/api/users/<user_id>/follow', methods=['POST', 'GET'])
 @login_required
 @requires_auth
 def follow(user_id):
