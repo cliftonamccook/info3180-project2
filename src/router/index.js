@@ -1,5 +1,11 @@
 import { createRouter, createWebHistory } from 'vue-router'
 import HomeView from '../views/HomeView.vue'
+import RegisterView from '../views/RegisterView.vue'
+import LoginView from '../views/LoginView.vue'
+import ExploreView from '../views/ExploreView.vue'
+import LogoutView from '../views/LogoutView.vue'
+import NewPostView from '../views/NewPostView.vue'
+import ProfileView from '../views/ProfileView.vue'
 
 const router = createRouter({
   history: createWebHistory(import.meta.env.BASE_URL),
@@ -10,41 +16,34 @@ const router = createRouter({
       component: HomeView
     },
     {
-      path: '/explore',
-      name: 'ExploreView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded w../views/ExploreView.vueed.
-      component: () => import('../views/ExploreView.vue')
-    },
-    {
-      path: '/profile',
-      name: 'ProfileView',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded w../views/ExploreView.vueed.
-      component: () => import('../views/ProfileView.vue')
+      path: '/register',
+      name: 'register',
+      component: RegisterView
     },
     {
       path: '/login',
       name: 'login',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded w../views/ExploreView.vueed.
-      component: () => import('../views/LoginView.vue')
+      component: LoginView
     },
     {
-      path: '/register',
-      name: 'register',
-      // route level code-splitting
-      // this generates a separate chunk (About.[hash].js) for this route
-      // which is lazy-loaded w../views/ExploreView.vueed.
-      component: () => import('../views/RegisterView.vue')
+      path: '/explore',
+      name: 'explore',
+      component: ExploreView
     },
     {
-      path: '/post/new',
-      name: 'NewPostView',
-      component: () => import('../views/NewPostView.vue')
+      path: '/logout',
+      name: 'logout',
+      component: LogoutView
+    },
+    {
+      path: '/posts/new',
+      name: 'post',
+      component: NewPostView
+    },
+    {
+      path: '/users/:user_id',
+      name: 'profile',
+      component: ProfileView
     }
   ]
 })

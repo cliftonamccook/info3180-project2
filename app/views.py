@@ -164,7 +164,7 @@ def get_user_details(user_id):
         posts.append({
             "id": post.id,
             "user_id": post.user_id,
-            "photo": post.photo,
+            "photo": url_for('getImage', filename=post.photo),
             "description": post.caption,
             "created_on": post.created_on,
         })
@@ -176,7 +176,7 @@ def get_user_details(user_id):
         "email": user_details.email,
         "location": user_details.location,
         "biography": user_details.biography,
-        "profile_photo": user_details.profile_photo,
+        "profile_photo": url_for('getImage', filename=user_details.profile_photo),
         "joined_on": user_details.joined_on,
         "posts": posts
     }), 200
@@ -199,17 +199,24 @@ def get_posts(user_id):
         })
     return jsonify(posts=posts), 200
 
-@app.route('/api/users/<user_id>/follow', methods=['POST'])
+
+@app.route('/api/users/<user_id>/follow', methods=['POST', 'GET'])
 @login_required
 @requires_auth
 def follow(user_id):
-    """Create a Follow relationship between the current user and the target user."""
-    follow = Follow(user_id=user_id, follower_id=int(current_user.get_id()))
-    db.session.add(follow)
-    db.session.commit()
-    return jsonify({
-        "message": "You are now following that user."
-    }), 201
+    if request.method == 'POST':
+        """Create a Follow relationship between the current user and the target user."""
+        follow = Follow(user_id=user_id, follower_id=int(current_user.get_id()))
+        db.session.add(follow)
+        db.session.commit()
+        return jsonify({
+            "message": "You are now following that user."
+        }), 201
+    if request.method == 'GET':
+        follows = db.session.execute(db.select(Follow).filter_by(user_id=user_id)).scalars()
+        return jsonify({
+            "followers": len([follow for follow in follows])
+        }), 201
 
 
 @app.route('/api/v1/posts', methods=['GET'])
@@ -221,10 +228,12 @@ def get_all_posts():
     all_posts = []
     for post in posts:
         likes = db.session.execute(db.select(Like).filter_by(id=post.id)).scalars()
+        user = db.session.execute(db.select(User).filter_by(id=post.user_id)).scalar()
         all_posts.append({
             "id": post.id,
             "user_id": post.user_id,
-            "photo": post.photo,
+            "username": user.username,
+            "photo": url_for("getImage", filename=post.photo),
             "caption": post.caption,
             "created_on": post.created_on,
             "likes": len([like for like in likes])
